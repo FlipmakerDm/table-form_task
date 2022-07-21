@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="node_modules/normalize.css/normalize.css" />
+    <link rel="stylesheet" href="style/style.css" />
+    <title>Task</title>
+  </head>
+  <body>
+    <header class="header">
+      <input type="text" placeholder="Поиск" />
+    </header>
+    <nav class="sidebar">
+      <p>Меню</p>
+      <hr />
+      <menu>
+        <li>Пункт 1</li>
+        <li>Пункт 2</li>
+        <li>Пункт 3</li>
+        <li>Пункт 4</li>
+      </menu>
+    </nav>
+    <main>
+      <form class="table-container" onsubmit="onsubmit">
+        <div class="thead">
+          <div class="thead-column"><span>ФИО</span></div>
+          <div class="thead-column"><span>Должность</span></div>
+          <div class="thead-column"><span>Возраст</span></div>
+          <div class="thead-column"><span>Компетенции</span></div>
+        </div>
+        <div class="tbody">
+          <div class="trow" id="row-1">
+            <div class="trow-column">
+              <input type="text" class="tb-input" name="fio" required />
+            </div>
+            <div class="trow-column">
+              <select id="position" name="position_job">
+                <option selected disabled>Должность</option>
+                <option value="Аналитик">Аналитик</option>
+                <option value="Менеджер">Менеджер</option>
+                <option value="Программист">Программист</option>
+                <option value="Юрист">Юрист</option>
+              </select>
+            </div>
+            <div class="trow-column">
+              <input type="number" class="tb-input" name="age" required />
+            </div>
+            <div class="trow-column">
+              <textarea
+                type="text"
+                class="text-a"
+                name="competencies"
+              ></textarea>
+              <div class="container-btn_delete">
+                <button type="delete" class="btn delete">—</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-container">
+          <button type="sumbmit" class="btn submit">Отправить</button>
+          <button class="btn add">Добавить</button>
+        </div>
+      </form>
+    </main>
+    <footer class="footer">
+      <h1>Подвал</h1>
+    </footer>
+    <script src="/app/app.js"></script>
+  </body>
+</html>
