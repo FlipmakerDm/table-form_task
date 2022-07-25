@@ -59,6 +59,9 @@ function modal(str) {
     modal.classList.add('modal');
     modal.innerText = str;
     main.appendChild(modal);
+    setTimeout(() => {
+      modal.remove();
+    }, 1500);
   }
 }
 
