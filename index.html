@@ -8,20 +8,38 @@
     <link rel="stylesheet" href="style/style.css" />
     <title>Task</title>
   </head>
+
   <body>
     <header class="header">
-      <input type="text" placeholder="Поиск" />
+      <input type="text" class="header-input" placeholder="Поиск" />
     </header>
+
     <nav class="sidebar">
-      <p>Меню</p>
-      <hr />
-      <menu>
-        <li>Пункт 1</li>
-        <li>Пункт 2</li>
-        <li>Пункт 3</li>
-        <li>Пункт 4</li>
-      </menu>
+      <div class="desktop-sidebar">
+        <p>Меню</p>
+        <hr />
+        <menu class="menu-sidebar">
+          <li>Пункт 1</li>
+          <li>Пункт 2</li>
+          <li>Пункт 3</li>
+          <li>Пункт 4</li>
+        </menu>
+      </div>
+      <div class="mobile-sidebar">
+        <button class="btn-sidebar">Меню</button>
+          <menu class="menu-sidebar_mobile">
+            <button class="btn-menu">Меню</button>
+            <div class="list">
+            <li>Пункт 1</li>
+            <li>Пункт 2</li>
+            <li>Пункт 3</li>
+            <li>Пункт 4</li>
+            </div>  
+          </menu>
+        </div>
+      </div>
     </nav>
+
     <main>
       <form class="table-container" onsubmit="onsubmit">
         <div class="thead">
@@ -33,11 +51,21 @@
         <div class="tbody">
           <div class="trow" id="row-1">
             <div class="trow-column">
-              <input type="text" class="tb-input" name="fio" required />
+              <input
+                type="text"
+                class="trow-input"
+                name="fio[]"
+                data-validation
+              />
             </div>
             <div class="trow-column">
-              <select id="position" name="position_job">
-                <option selected disabled>Должность</option>
+              <select
+                id="position"
+                class="trow-input"
+                name="position_job[]"
+                data-validation
+              >
+                <option value="" selected disabled>Должность</option>
                 <option value="Аналитик">Аналитик</option>
                 <option value="Менеджер">Менеджер</option>
                 <option value="Программист">Программист</option>
@@ -45,13 +73,19 @@
               </select>
             </div>
             <div class="trow-column">
-              <input type="number" class="tb-input" name="age" required />
+              <input
+                type="number"
+                min="0"
+                class="trow-input"
+                name="age[]"
+                data-validation
+              />
             </div>
             <div class="trow-column">
               <textarea
                 type="text"
                 class="text-a"
-                name="competencies"
+                name="competencies[]"
               ></textarea>
               <div class="container-btn_delete">
                 <button type="delete" class="btn delete">—</button>
@@ -64,10 +98,17 @@
           <button class="btn add">Добавить</button>
         </div>
       </form>
+      <div class="lds-facebook">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </main>
+
     <footer class="footer">
       <h1>Подвал</h1>
     </footer>
+
     <script src="/app/app.js"></script>
   </body>
 </html>

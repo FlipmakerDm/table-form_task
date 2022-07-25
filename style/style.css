@@ -11,26 +11,15 @@
 body {
   height: 100vh;
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-auto-flow: column;
+  grid-template-columns: minmax(max-content, 200px) 1fr;
   grid-template-rows: 80px 1fr 150px;
   grid-template-areas:
     'sidebar head'
     'sidebar main'
     'sidebar footer';
 }
-.sidebar {
-  height: 100%;
-  grid-area: sidebar;
-  background-color: bisque;
-  padding: 100px 5px 0 5px;
-}
-main {
-  grid-area: main;
-  display: grid;
-  justify-content: center;
-  grid-template-columns: 0.8fr;
-  padding: 30px;
-}
+
 .header {
   grid-area: head;
   display: flex;
@@ -38,24 +27,67 @@ main {
   align-items: center;
   background-color: #c4efff;
 }
-.header > input {
+
+.header-input {
   padding: 10px;
   outline: none;
   border: none;
   border-radius: 5px;
 }
-.table-container {
+
+.sidebar {
+  height: 100vh;
 }
 
+.desktop-sidebar {
+  display: block;
+  height: 100%;
+  grid-area: sidebar;
+  background-color: bisque;
+  padding: 100px 10px 0 10px;
+}
+
+.menu-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+
+.mobile-sidebar {
+  display: none;
+}
+.btn-sidebar {
+  background-color: bisque;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #e1b580;
+}
+
+main {
+  grid-area: main;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+}
+.table-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 10px;
+}
 .thead {
   text-align: center;
   border: 1px solid #000;
+  border-right: none;
+  border-bottom: none;
   grid-area: thead;
   display: grid;
   grid-template-columns:
-    minmax(150px, 0.24fr) minmax(150px, 0.24fr) minmax(150px, 0.24fr)
-    minmax(150px, 0.28fr);
+    minmax(100px, 25%) minmax(100px, 20%)
+    minmax(100px, 25%) minmax(120px, 30%);
 }
+
 .thead .thead-column:nth-child(odd) {
   background-color: #cac7c7;
 }
@@ -63,6 +95,7 @@ main {
 .thead .thead-column:nth-child(even) {
   background-color: #f5f5f5;
 }
+
 .thead-column {
   padding: 10px;
   border-right: 1px solid #070707;
@@ -72,23 +105,27 @@ main {
 
 .tbody {
   grid-area: tbody;
+  border: 1px solid #070707;
+  border-top: none;
+  border-right: none;
+  background-color: #fff;
 }
 
 .trow {
   display: grid;
-  border: 1px solid #070707;
-  border-top: none;
+  border-top: 1px solid #000;
   grid-template-columns:
-    minmax(150px, 0.24fr) minmax(150px, 0.24fr) minmax(150px, 0.24fr)
-    minmax(150px, 0.28fr);
+    minmax(100px, 25%) minmax(100px, 20%)
+    minmax(100px, 25%) minmax(120px, 30%);
 }
 
 .trow-column {
-  border-left: 1px solid #000;
+  border-right: 1px solid #000;
   position: relative;
   padding: 10px;
 }
-.tb-input {
+
+.trow-input {
   width: 100%;
   padding: 5px;
   outline: none;
@@ -102,33 +139,27 @@ main {
   resize: none;
 }
 
-#position {
-  width: 100%;
-  padding: 5px;
-  cursor: pointer;
-  outline: none;
-}
-
 .container-btn_delete {
   position: absolute;
   top: 50px;
   right: -50px;
 }
+
 .btn {
   border-radius: 5px;
   border: 1px solid #fff;
-  background-color: #f4cece;
   color: #000;
   padding: 10px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.delete:hover {
-  background-color: #f38e8e;
+.delete {
+  background-color: #f4cece;
 }
 
-.delete {
+.delete:hover {
+  background-color: #f38e8e;
 }
 
 .btn-container {
@@ -136,16 +167,19 @@ main {
   display: flex;
   justify-content: space-between;
 }
+
 .submit {
-  background-color: rgb(162, 225, 247);
+  background-color: #a2e1f7;
 }
+
 .submit:hover {
-  background-color: rgb(92, 184, 217);
+  background-color: #5cb8d9;
 }
 
 .add {
   background-color: rgb(209, 247, 211);
 }
+
 .add:hover {
   background-color: rgb(101, 214, 106);
 }
@@ -153,6 +187,8 @@ main {
 .footer {
   grid-area: footer;
   background-color: rgb(197, 194, 190);
+  display: flex;
+  justify-content: center;
 }
 
 .popup {
@@ -167,4 +203,131 @@ main {
   font-size: 12px;
   border-radius: 5px;
   line-height: 10px;
+}
+
+.required {
+  border: 2px solid #f65e5e;
+}
+
+.modal {
+  z-index: -1;
+  padding: 5px;
+  position: absolute;
+  top: 200px;
+  background-color: rgb(249, 97, 97);
+  color: #fff;
+  max-width: 300px;
+  text-align: center;
+  animation-duration: 2s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    top: 200px;
+  }
+
+  50% {
+    top: 250px;
+  }
+
+  to {
+    top: 200px;
+  }
+}
+
+.lds-facebook {
+  display: none;
+  position: absolute;
+  bottom: 135px;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: #5cb8d9;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+}
+
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+}
+
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+}
+
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%,
+  100% {
+    top: 24px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 650px) {
+  body {
+    position: relative;
+    height: 100vh;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr;
+    grid-template-rows: 80px 1fr 150px;
+    grid-template-areas:
+      'head'
+      'main'
+      'footer';
+  }
+
+  .desktop-sidebar {
+    display: none;
+  }
+  .mobile-sidebar {
+    position: absolute;
+    display: block;
+    left: 5px;
+    top: 85px;
+    z-index: 1;
+  }
+  .btn-sidebar {
+    display: block;
+  }
+  .btn-menu {
+    background-color: #ffc57f;
+    border: 1px solid #e1b580;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .list {
+    display: flex;
+  }
+  .menu-sidebar_mobile {
+    display: none;
+    background-color: bisque;
+    flex-direction: row;
+    padding: 0;
+    max-height: 40px;
+    margin: 0;
+    border-radius: 5px;
+    list-style-type: none;
+    animation-duration: 2s;
+    animation-name: slidein;
+  }
 }

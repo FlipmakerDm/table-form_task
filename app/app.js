@@ -1,30 +1,13 @@
 const tbody = document.querySelector('.tbody');
-const newTr = document.querySelector('#row-1');
-const addBtn = document.querySelector('.add');
-const form = document.querySelector('form');
-let deleteContaner = document.querySelector('.container-btn_delete');
-const deleteBtn = document.querySelector('.delete');
-const message = document.createElement('div');
 
 function uuid() {
   const id = Math.floor(Math.random() * 1_000_000_000);
   return id.toString(36);
 }
 
-deleteBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-});
-
-deleteBtn.addEventListener('mouseover', () => {
-  message.classList.add('popup');
-  message.innerText = 'Нельзя удалить эту строку';
-  deleteContaner.appendChild(message);
-});
-deleteBtn.addEventListener('mouseout', () => {
-  message.remove();
-});
-
 function createRow() {
+  const newTr = document.querySelector('#row-1');
+
   const id = 'row-' + uuid();
 
   const newRow = document.createElement('div');
@@ -33,15 +16,18 @@ function createRow() {
   newRow.setAttribute('id', id);
   newRow.classList.add('trow');
 
-  let btn = newRow.querySelector('button');
+  const required = newRow.querySelectorAll('.required');
+  required.forEach((field) => {
+    field.classList.remove('required');
+  });
+
+  const btn = newRow.querySelector('button');
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
 
     if (tbody.children.length > 1) {
       removeRow(id);
-    } else {
-      console.log('attention');
     }
   });
 
@@ -54,27 +40,109 @@ function removeRow(id) {
   row.remove();
 }
 
-addBtn.addEventListener('click', (e) => {
-  e.preventDefault();
+function validation() {
+  let res = true;
+  const validationFields = document.querySelectorAll('[data-validation]');
+  for (const field of validationFields) {
+    if (field.value.trim() === '') {
+      field.classList.add('required');
+      res = false;
+    } else field.classList.remove('required');
+  }
+  return res;
+}
 
-  const newRow = createRow();
+function modal(str) {
+  if (tbody.children.length < 3) {
+    const main = document.querySelector('main');
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerText = str;
+    main.appendChild(modal);
+  }
+}
 
-  tbody.appendChild(newRow);
-});
+function init() {
+  const deleteBtn = document.querySelector('.delete');
+  const messageDeleted = document.createElement('div');
+  const addBtn = document.querySelector('.add');
+  const form = document.querySelector('form');
+  const loader = document.querySelector('.lds-facebook ');
+  const menuSidebar = document.querySelector('.menu-sidebar_mobile');
+  const btnSidebar = document.querySelector('.btn-sidebar');
+  const menuBtn = document.querySelector('.btn-menu');
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(form);
-  const data = Array.from(formData.entries());
-  const result = {};
-  data.forEach(([key, value]) => {
-    if (!result[key]) {
-      result[key] = [];
-    }
-    result[key].push(value);
+  btnSidebar.addEventListener('click', () => {
+    menuSidebar.style.display = 'flex';
+    btnSidebar.style.display = 'none';
+  });
+  menuBtn.addEventListener('click', () => {
+    menuSidebar.style.display = 'none';
+    btnSidebar.style.display = 'block';
   });
 
-  const json = JSON.stringify(result);
-  console.log(json);
-});
+  deleteBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+  });
+
+  deleteBtn.addEventListener('mouseover', () => {
+    const deleteContaner = document.querySelector('.container-btn_delete');
+
+    messageDeleted.classList.add('popup');
+    messageDeleted.innerText = 'Нельзя удалить эту строку';
+    deleteContaner.appendChild(messageDeleted);
+  });
+
+  deleteBtn.addEventListener('mouseout', () => {
+    messageDeleted.remove();
+  });
+
+  addBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const newRow = createRow();
+    tbody.appendChild(newRow);
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const isValid = validation();
+
+    if (!isValid) {
+      modal('Заполните поле ввода');
+      return;
+    }
+
+    const formData = new FormData(form);
+    const data = Array.from(formData.entries());
+    const result = {};
+
+    data.forEach(([key, value]) => {
+      if (!result[key]) {
+        result[key] = [];
+      }
+
+      result[key].push(value);
+    });
+
+    const resultJson = JSON.stringify(result);
+    console.log(resultJson);
+
+    try {
+      loader.style.display = 'inline-block';
+      fetch('app/script.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: resultJson,
+      }).then((res) => {
+        loader.style.display = 'none';
+        modal('Данные отправлены');
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
+init();
