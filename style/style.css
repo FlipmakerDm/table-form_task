@@ -163,6 +163,7 @@ main {
 }
 
 .btn-container {
+  position: relative;
   margin: 10px;
   display: flex;
   justify-content: space-between;
@@ -213,7 +214,8 @@ main {
   z-index: -1;
   padding: 5px;
   position: absolute;
-  top: 200px;
+  top: 20px;
+  left: 300px;
   background-color: rgb(249, 97, 97);
   color: #fff;
   max-width: 300px;
@@ -224,22 +226,23 @@ main {
 
 @keyframes slidein {
   from {
-    top: 200px;
+    top: 20px;
   }
 
   50% {
-    top: 250px;
+    top: 0px;
   }
 
   to {
-    top: 200px;
+    top: 20px;
   }
 }
 
 .lds-facebook {
   display: none;
   position: absolute;
-  bottom: 135px;
+  left: 350px;
+  top: -20px;
   width: 80px;
   height: 80px;
 }

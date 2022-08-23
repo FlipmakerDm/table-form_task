@@ -53,12 +53,12 @@ function validation() {
 }
 
 function modal(str) {
-  if (tbody.children.length < 3) {
-    const main = document.querySelector('main');
+  const btnContainer = document.querySelector('.btn-container');
+  if (btnContainer.children.length < 4) {
     const modal = document.createElement('div');
     modal.classList.add('modal');
     modal.innerText = str;
-    main.appendChild(modal);
+    btnContainer.appendChild(modal);
     setTimeout(() => {
       modal.remove();
     }, 1500);
@@ -125,6 +125,7 @@ function init() {
       }
 
       result[key].push(value);
+      e.target.reset();
     });
 
     const resultJson = JSON.stringify(result);
